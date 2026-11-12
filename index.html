@@ -13,9 +13,9 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#0b1623;--card:#13243a;--ink:#e6eef6;--mute:#93a7bb;--line:#26405c;--eb:#7f9fd6;--gm:#f5a623;--ok:#41c79a;--hero:#071019}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.7 "Source Serif 4",Georgia,serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:clamp(16px,.5vw + 14px,19px)/1.7 "Source Serif 4",Georgia,serif}
 h1,h2,h3,.big,button,.tag{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
-.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,48px)}
 header{background:var(--hero);color:var(--heroink);padding:56px 0 40px}
 header .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
 h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.04;margin:0 0 14px;font-weight:800;letter-spacing:-.02em}
@@ -28,14 +28,14 @@ header p{color:#b9cde0;margin:0 0 12px;font-size:1.05rem}
 section{padding:44px 0 8px}
 h2{font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
 h3{font-size:1.15rem;margin:0 0 6px}
-p{margin:0 0 16px;max-width:68ch}
+p{margin:0 0 16px;max-width:80ch}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:20px 0}
 .k{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
 .big{font-size:2.1rem;font-weight:800;line-height:1.1}
 .k small{display:block;color:var(--mute);font-size:.88rem;line-height:1.35;margin-top:4px}
 .bar{height:8px;background:var(--line);border-radius:9px;margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gm)}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:20px 0}
-.cv{position:relative;height:300px}
+.cv{position:relative;height:clamp(250px,30vw,380px)}
 .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 14px;font-family:"Bricolage Grotesque",sans-serif;font-size:.85rem}
 .flow span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
 .flow.ai span{border-color:var(--ok);color:var(--ok)}
@@ -56,7 +56,7 @@ input[type=range]{width:100%;accent-color:var(--gm)}
 ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
 .quote{border-left:5px solid var(--gm);padding:6px 18px;font-size:1.25rem;margin:24px 0;max-width:62ch}
 footer{padding:30px 0 50px;color:var(--mute);font-size:.85rem}
-@media (max-width:720px){header .grid,.two{grid-template-columns:1fr}.cv{height:260px}}
+@media (max-width:900px){header .grid,.two{grid-template-columns:1fr}header .shelf{max-width:520px}}@media (max-width:520px){header{padding:36px 0 28px}.panel{padding:14px;border-radius:14px}.out{grid-template-columns:1fr 1fr}.big{font-size:1.7rem}.k{padding:12px}.out b{font-size:1.2rem}}
 </style>
 </head>
 <body>
@@ -113,10 +113,10 @@ footer{padding:30px 0 50px;color:var(--mute);font-size:.85rem}
 <section>
 <h2>The two offers side by side</h2>
 <p>Gamma offers more money at a higher valuation, so the founders give up less. Earlybird’s economics are tougher on most levers.</p>
-<div class="panel"><h3>Money and valuation (¥ million)</h3><div class="cv"><canvas id="cVal"></canvas></div></div>
-<div class="panel"><h3>Who owns what after the deal</h3>
+<div class="two" style="margin:20px 0"><div class="panel" style="margin:0"><h3>Money and valuation (¥ million)</h3><div class="cv"><canvas id="cVal"></canvas></div></div>
+<div class="panel" style="margin:0"><h3>Who owns what after the deal</h3>
 <p style="margin-bottom:10px"><button id="bg" aria-pressed="true">Gamma Ventures</button> <button id="be" aria-pressed="false">Earlybird Wealth</button></p>
-<div class="cv"><canvas id="cCap"></canvas></div></div>
+<div class="cv"><canvas id="cCap"></canvas></div></div></div>
 <div class="panel tw"><h3>Term scorecard (green = better for founders)</h3>
 <table><thead><tr><th>Term</th><th>Earlybird</th><th>Gamma</th></tr></thead><tbody>
 <tr><td>Series A stake given up</td><td>12%</td><td class="w">10.78%</td></tr>
@@ -184,7 +184,7 @@ function build(){
  charts.acc=new Chart(cAcc,{type:'bar',data:{labels:['Image recognition accuracy','Inspection efficiency gain'],datasets:[{data:[96,20],backgroundColor:[ok,gC],borderRadius:8}]},options:{...o,plugins:{legend:{display:false}},scales:{...o.scales,y:{grid:{color:line},max:100,ticks:{callback:v=>v+'%'}}}}});
  charts.time=new Chart(cTime,{type:'bar',data:{labels:['Post-inspection analysis','Monthly data review'],datasets:[{label:'Before',data:[100,100],backgroundColor:line},{label:'With RetailEye',data:[.003,10],backgroundColor:ok}]},options:{...o,scales:{...o.scales,y:{grid:{color:line},ticks:{callback:v=>v+'%'}}}}});
  charts.val=new Chart(cVal,{type:'bar',data:{labels:['Investment','Pre-money valuation','Post-money valuation'],datasets:[{label:'Earlybird Wealth',data:[32.4,237.6,270],backgroundColor:eC,borderRadius:6},{label:'Gamma Ventures',data:[40,331.06,371.06],backgroundColor:gC,borderRadius:6}]},options:o});
- charts.cap=new Chart(cCap,{type:'doughnut',data:{labels:['Founders','Angel investors','ESOP','Series A investor'],datasets:[{data:cap[mode],backgroundColor:[ok,eC,line,gC],borderColor:V('--card'),borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'%'}}}}});
+ charts.cap=new Chart(cCap,{type:'doughnut',data:{labels:['Founders','Angel investors','ESOP','Series A investor'],datasets:[{data:cap[mode],backgroundColor:[ok,eC,line,gC],borderColor:V('--card'),borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:innerWidth<600?'bottom':'right'},tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'%'}}}}});
  const hi=ctx=>xs[ctx.dataIndex]==+ex.value?6:0;
  charts.liq=new Chart(cLiq,{type:'line',data:{labels:xs,datasets:[{label:'Gamma as offered',data:xs.map(gOff),borderColor:gC,backgroundColor:gC,pointRadius:hi},{label:'Counter: 1× non-participating',data:xs.map(gCtr),borderColor:ok,backgroundColor:ok,pointRadius:hi},{label:'Earlybird',data:xs.map(eb),borderColor:eC,backgroundColor:eC,borderDash:[6,4],pointRadius:hi}]},options:{...o,elements:{line:{tension:0,borderWidth:3}},scales:{x:{grid:{display:false},title:{display:true,text:'Exit value (¥M)'}},y:{grid:{color:line},title:{display:true,text:'Series A proceeds (¥M)'}}}}});
  upd();
